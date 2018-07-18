@@ -31,9 +31,15 @@
     <Content Include=".gitignore" />
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
+    <Content Include="static\base.css" />
+    <Content Include="templates\base.html" />
+    <Content Include="templates\home.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app.py" />
+    <Compile Include="secrets.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
@@ -45,6 +51,10 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="static\" />
+    <Folder Include="templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
