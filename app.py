@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send
 
 from secrets import SECRET_KEY
 
@@ -15,5 +15,11 @@ socketio = SocketIO(app)
 def index():
     return render_template('home.html')
 
+@socketio.on('message')
+def handle_message(msg):
+    print('received message: ' + msg)
+    send(msg, broadcast=True)
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(debug=True)
