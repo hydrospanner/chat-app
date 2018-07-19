@@ -27,10 +27,16 @@ Chit-chat
 
 {% block content %}
 <div class="container">
-    <h1>Chat here, dog!</h1>
-
-    <ul id="messages"></ul>
-    <input type="text" id="mymessage" />
-    <button id="sendbutton">Send</button>
+    <h1>Chat here</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <ul id="messages"></ul>
+            <textarea class="form-control" rows="5" id="mymessage"></textarea>
+            <button id="sendbutton">Send</button>
+        </div>
+        <div class="col-sm-6">I'm a side-bar!</div>
+        <p></p>
+    </div>
+    
 </div>
 {% endblock %}
