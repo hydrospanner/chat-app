@@ -1,20 +1,24 @@
-// console.log('i ran');
-
 $(document).ready(function () {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
     socket.on('connect', function () {
-        socket.send('user connected');
-        console.log('user connected');
+        //socket.send('user connected');
+        msg = 'john' + 'has connected';
+        socket.emit('send msg', {'msg': msg, 'user': 'john'});
     });
 
     socket.on('message', function (msg) {
-        $("#messages").append('<li class="list-group-item">' + msg + '<br><small>[time hey]</small></li>');
+        const li = document.createElement('li');
+        li.className = "list-group-item";
+        li.innerHTML = msg;
+        $("#messages").append(li);
     });
 
     socket.on('receive message', function (data) {
-        console.log('got recd msg handler');
-        $("#messages").append('<li class="list-group-item">' + data['msg'] + '<br><small> by ' + data['user'] + ' at [time]</small></li>');
+        const li = document.createElement('li');
+        li.className = "list-group-item";
+        li.innerHTML = data['msg'] + '<br><small> by ' + data['user'] + ' at [time]</small>';
+        $("#messages").append(li);
     });
 
     /*
@@ -25,7 +29,6 @@ $(document).ready(function () {
     */
 
     $('#sendbutton').on('click', function () {
-        console.log("ahhh");
         socket.emit('send msg', { 'msg': $('#mymessage').val(), 'user': 'john' });
         $('#mymessage').val('');
     });

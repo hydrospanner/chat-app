@@ -23,7 +23,6 @@ def handle_unnamed_event(msg):
 
 @socketio.on('send msg')
 def handle_message(data):
-    print('triggered!')
     print('received message: ' + data['msg'])
     print('user: ' + data['user'])
     data['time'] = datetime.datetime.now()
