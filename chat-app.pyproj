@@ -32,6 +32,7 @@
     <Content Include="README.md" />
     <Content Include="requirements.txt" />
     <Content Include="static\base.css" />
+    <Content Include="static\sockets.js" />
     <Content Include="templates\base.html" />
     <Content Include="templates\home.html" />
   </ItemGroup>
