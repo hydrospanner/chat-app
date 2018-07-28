@@ -2,7 +2,6 @@ $(document).ready(function () {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
     socket.on('connect', function () {
-        //socket.send('user connected');
         msg = 'john' + 'has connected';
         socket.emit('send msg', {'msg': msg, 'user': 'john'});
     });
@@ -21,15 +20,21 @@ $(document).ready(function () {
         $("#messages").append(li);
     });
 
-    /*
     $('#sendbutton').on('click', function () {
-        socket.send($('#mymessage').val());
-        $('#mymessage').val('');
-    });
-    */
-
-    $('#sendbutton').on('click', function () {
+        console.log('txt: ');
+        const msg = document.querySelector('#mymessage').value;
+        console.log(msg);
         socket.emit('send msg', { 'msg': $('#mymessage').val(), 'user': 'john' });
         $('#mymessage').val('');
+        document.querySelector('#mymessage').focus();
     });
+
+    
+
 });
+
+document.querySelector('#mymessage').onkeyup = () => {
+    let no_text = (document.querySelector('#mymessage').value.length == 0);
+    // console.log(no_text);
+    document.querySelector('#sendbutton').disabled = no_text;
+};

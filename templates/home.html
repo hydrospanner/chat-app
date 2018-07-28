@@ -4,13 +4,10 @@
 {{super()}}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="{{url_for('.static', filename='sockets.js')}}"></script>
-<script>
-    console.log('test');
-</script>
 {% endblock %}
 
 {% block title %}
-Chit-chat
+SocketIO messenger
 {% endblock %}
 
 {% block content %}
@@ -19,7 +16,6 @@ Chit-chat
     <div class="row">
         <div class="col-sm-6">
             <ul id="messages" class="list-group"></ul>
-            <table id="message-tbl"></table>
             <textarea class="form-control" rows="5" id="mymessage" autofocus></textarea>
             <button id="sendbutton">Send</button>
         </div>

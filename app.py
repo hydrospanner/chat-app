@@ -25,7 +25,7 @@ def handle_unnamed_event(msg):
 def handle_message(data):
     print('received message: ' + data['msg'])
     print('user: ' + data['user'])
-    data['time'] = datetime.datetime.now()
+    # data['time'] = datetime.datetime.now()
     emit('receive message', data, broadcast=True)
 
 if __name__ == '__main__':
