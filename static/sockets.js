@@ -1,37 +1,37 @@
+var user_name = get_user_name();
+
 function get_user_name() {
     if (localStorage.getItem('user_name')) {
         return localStorage.getItem('user_name');
     } else {
         let rand = Math.floor((Math.random() * 1000000) + 1);
-        let user_name = 'user ' + rand.toString();
-        localStorage.setItem('user_name', user_name);
-        return user_name;
+        let rand_name = 'user ' + rand.toString();
+        localStorage.setItem('user_name', rand_name);
+        return rand_name;
     }
     };
 
 $(document).ready(function () {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
-    
-
-    // var user_name = // add func here
-
     socket.on('connect', function () {
-        msg = get_user_name() + ' has connected';
-        socket.emit('send msg', { 'msg': msg, 'user': localStorage.getItem('user_name')});
-    });
-
-    socket.on('message', function (msg) {
-        const li = document.createElement('li');
-        li.className = "list-group-item";
-        li.innerHTML = msg;
-        $("#messages").append(li);
+        const msg = user_name + ' has connected';
+        socket.emit('announce', { 'msg': msg });
     });
 
     socket.on('receive message', function (data) {
         const li = document.createElement('li');
         li.className = "list-group-item";
         li.innerHTML = data['msg'] + '<br><small> by ' + data['user'] + ' at [time]</small>';
+        $("#messages").append(li);
+    });
+
+    socket.on('announcement', function (data) {
+        const li = document.createElement('li');
+        li.className = "list-group-item";
+        const h = document.createElement('h4');
+        h.textContent = data['msg'];
+        li.appendChild(h);
         $("#messages").append(li);
     });
 
@@ -44,8 +44,10 @@ $(document).ready(function () {
         document.querySelector('#mymessage').focus();
     });
 
-    
-
+    $('form#rename-user').submit(function (event) {
+        const msg = user_name + ' is now ' + $('#new_user_name').val();
+        socket.emit('announce', { 'msg': msg });
+    });
 });
 
 document.querySelector('#mymessage').onkeyup = () => {
