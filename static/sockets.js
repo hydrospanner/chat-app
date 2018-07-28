@@ -1,9 +1,24 @@
+function get_user_name() {
+    if (localStorage.getItem('user_name')) {
+        return localStorage.getItem('user_name');
+    } else {
+        let rand = Math.floor((Math.random() * 1000000) + 1);
+        let user_name = 'user ' + rand.toString();
+        localStorage.setItem('user_name', user_name);
+        return user_name;
+    }
+    };
+
 $(document).ready(function () {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
+    
+
+    // var user_name = // add func here
+
     socket.on('connect', function () {
-        msg = 'john' + 'has connected';
-        socket.emit('send msg', {'msg': msg, 'user': 'john'});
+        msg = get_user_name() + ' has connected';
+        socket.emit('send msg', { 'msg': msg, 'user': localStorage.getItem('user_name')});
     });
 
     socket.on('message', function (msg) {
@@ -24,7 +39,7 @@ $(document).ready(function () {
         console.log('txt: ');
         const msg = document.querySelector('#mymessage').value;
         console.log(msg);
-        socket.emit('send msg', { 'msg': $('#mymessage').val(), 'user': 'john' });
+        socket.emit('send msg', { 'msg': $('#mymessage').val(), 'user': localStorage.getItem('user_name') });
         $('#mymessage').val('');
         document.querySelector('#mymessage').focus();
     });
