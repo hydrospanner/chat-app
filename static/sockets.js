@@ -2,12 +2,15 @@ var user_name = get_user_name();
 
 
 function get_user_name() {
-    if (localStorage.getItem('user_name')) {
-        return localStorage.getItem('user_name');
+    const stored_user = localStorage.getItem('user_name');
+    if (stored_user) {
+        $('#new_user_name').val(stored_user);
+        return stored_user;
     } else {
         let rand = Math.floor((Math.random() * 1000000) + 1);
         let rand_name = 'user ' + rand.toString();
         localStorage.setItem('user_name', rand_name);
+        $('#new_user_name').val(rand_name);
         return rand_name;
     }
 };
@@ -28,13 +31,13 @@ $(document).ready(function () {
         } else {
             return 'General'
         }
-
     }
 
     socket.on('connect', function () {
-        const msg = user_name + ' has connected';
-        socket.emit('announce', { 'msg': msg });
         current_room = get_current_room();
+        join_room(current_room);
+        const msg = user_name + ' has connected';
+        socket.emit('announce', { 'msg': msg, 'room': current_room });
     });
 
 
@@ -67,13 +70,14 @@ $(document).ready(function () {
     $('form#rename-user').submit(function (event) {
         const msg = user_name + ' is now ' + $('#new_user_name').val();
         socket.emit('announce', { 'msg': msg });
-        user_name = $('#new_user_name').val()
+        user_name = $('#new_user_name').val();
         localStorage.setItem('user_name', user_name);
     });
 
     $('form#new-room').submit(function (event) {
         // server will validate if room exists
         const new_room = $('#new-chat-room').val();
+        $('#new-chat-room').val('');
         if (new_room.length > 0) {
             socket.emit('new room', { 'room': new_room });
 
@@ -103,10 +107,16 @@ $(document).ready(function () {
     function change_room(room) {
         const old_room = current_room;
         socket.emit('leave', { 'room': old_room });
-        socket.emit('join', {'room': room});
+        join_room(room);
+    };
+
+    function join_room(room) {
+        socket.emit('join', { 'room': room });
         current_room = room;
         $('#chat-room-name').text(room);
-    };
+        const msg = user_name + ' has joined the room';
+        socket.emit('announce', { 'msg': msg, 'room': current_room });
+    }
 });
 
 document.querySelector('#mymessage').onkeyup = () => {

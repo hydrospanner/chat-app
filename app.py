@@ -26,7 +26,7 @@ def handle_message(data):
 
 @socketio.on('announce')
 def handle_announcement(data):
-    emit('announcement', data, broadcast=True)
+    emit('announcement', data, room=data['room'])
 
 chat_rooms = ['General']
 @socketio.on('new room')
