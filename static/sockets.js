@@ -38,12 +38,22 @@ $(document).ready(function () {
         console.log(msg);
     });
 
-    socket.on('receive message', function (data) {
+    function append_message(data) {
         const li = document.createElement('li');
         li.className = "list-group-item";
         let time = new Date(data['time']).toLocaleTimeString();
         li.innerHTML = data['msg'] + '<br><small> by ' + data['user'] + ' at ' + time + '</small>';
         $("#messages").append(li);
+    }
+
+    socket.on('receive message', function (data) {
+        append_message(data);
+    });
+
+    socket.on('message history', function (messages) {
+        for (var i = 0; i < messages.length; i++) {
+            append_message(messages[i]);
+        }
     });
 
     socket.on('announcement', function (data) {
@@ -80,7 +90,6 @@ $(document).ready(function () {
     });
 
     socket.on('room list', function (data) {
-        console.log('room list');
         // set global chat_rooms variable with rooms
         open_rooms = data['rooms'];
         // delete current room list
