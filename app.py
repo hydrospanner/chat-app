@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO, emit, send
-import datetime
 
 from secrets import SECRET_KEY
 
@@ -23,14 +22,26 @@ def handle_unnamed_event(msg):
 
 @socketio.on('send msg')
 def handle_message(data):
-    print('received message: ' + data['msg'])
-    # data['time'] = datetime.datetime.now()
     emit('receive message', data, broadcast=True)
 
 @socketio.on('announce')
 def handle_announcement(data):
-    print('announcing')
     emit('announcement', data, broadcast=True)
+
+chat_rooms = ['General']
+@socketio.on('new room')
+def handle_new_room(data):
+    print('new room')
+    if len(chat_rooms) <= 20:
+        chat_rooms.append(data['room'])
+        data['rooms'] = chat_rooms
+        emit('room list', data, broadcast=True)
+
+@socketio.on('request rooms')
+def handle_rooms_request(data):
+    print('request rooms')
+    data['rooms'] = chat_rooms
+    emit('room list', data, broadcast=True)
 
 
 if __name__ == '__main__':

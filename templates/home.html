@@ -7,24 +7,32 @@
 {% endblock %}
 
 {% block title %}
-SocketIO messenger
+SocketIO Messenger
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Chat here</h1>
+    <h1>SocketIO Chat</h1>
+    <h3 id="chat-room-name"></h3>
     <div class="row">
         <div class="col-sm-6">
             <ul id="messages" class="list-group"></ul>
-            <textarea class="form-control" rows="5" id="mymessage" autofocus></textarea>
+            <textarea class="form-control" rows="4" id="mymessage" autofocus></textarea>
             <button id="sendbutton">Send</button>
         </div>
         <div class="col-sm-6">
             <h4>Update user name</h4>
             <form id="rename-user" action="#">
-                <input type="text" id="new_user_name" >
-                <input type="submit" value="Update" >
+                <input type="text" id="new_user_name">
+                <input type="submit" value="Update">
             </form>
+            <h4>Create new chat room</h4>
+            <form id="new-room" action="#">
+                <input type="text" id="new-chat-room">
+                <input type="submit" value="Create Room">
+            </form>
+            <h4>Chat rooms</h4>
+            <ul id="chat-rooms"></ul>
         </div>
     </div>    
 </div>
