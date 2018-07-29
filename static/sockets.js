@@ -86,10 +86,15 @@ $(document).ready(function () {
         $('#chat-rooms').empty();
         // add rooms to room list
         for (var i = 0; i < data['rooms'].length; i++) {
-            let li = document.createElement('li');
-            // li.className = "list-group-item";
-            li.innerHTML = data['rooms'][i];
-            $('#chat-rooms').append(li);
+            let button = document.createElement('input');
+            button.type = "button";
+            button.className = "btn btn-primary btn-lg room-button";
+            const room = data['rooms'][i];
+            button.value = room;
+            button.onclick = function (event) {
+                alert(room);
+            };
+            $('#chat-rooms').append(button);
         }
         
     });
