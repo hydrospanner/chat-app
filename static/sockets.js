@@ -15,12 +15,10 @@ function get_user_name() {
     }
 };
 
-// add function to change rooms. set local storage. change title. change global room variable. 
 
 $(document).ready(function () {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     var open_rooms;
-    // var current_room = get_current_room();
     var current_room;
 
     function get_current_room() {
@@ -37,10 +35,8 @@ $(document).ready(function () {
         current_room = get_current_room();
         join_room(current_room);
         const msg = user_name + ' has connected';
-        socket.emit('announce', { 'msg': msg, 'room': current_room });
+        console.log(msg);
     });
-
-
 
     socket.on('receive message', function (data) {
         const li = document.createElement('li');
@@ -80,7 +76,6 @@ $(document).ready(function () {
         $('#new-chat-room').val('');
         if (new_room.length > 0) {
             socket.emit('new room', { 'room': new_room });
-
         }
     });
 
@@ -100,6 +95,7 @@ $(document).ready(function () {
             button.onclick = function () {
                 change_room(room);
             };
+            // button.onclick = change_room(room);
             $('#chat-rooms').append(button);
         } 
     });
@@ -107,6 +103,7 @@ $(document).ready(function () {
     function change_room(room) {
         const old_room = current_room;
         socket.emit('leave', { 'room': old_room });
+        $('#messages').empty();
         join_room(room);
     };
 
