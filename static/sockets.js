@@ -91,13 +91,17 @@ $(document).ready(function () {
             button.className = "btn btn-primary btn-lg room-button";
             const room = data['rooms'][i];
             button.value = room;
-            button.onclick = function (event) {
-                alert(room);
+            button.onclick = function () {
+                change_room(room);
             };
             $('#chat-rooms').append(button);
-        }
-        
+        } 
     });
+
+    function change_room(room) {
+        current_room = room;
+        $('#chat-room-name').text(room);
+    };
 });
 
 document.querySelector('#mymessage').onkeyup = () => {
