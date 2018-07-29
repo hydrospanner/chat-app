@@ -40,7 +40,8 @@ $(document).ready(function () {
     socket.on('receive message', function (data) {
         const li = document.createElement('li');
         li.className = "list-group-item";
-        li.innerHTML = data['msg'] + '<br><small> by ' + data['user'] + ' at [time]</small>';
+        let time = new Date(data['time']).toLocaleTimeString();
+        li.innerHTML = data['msg'] + '<br><small> by ' + data['user'] + ' at ' + time + '</small>';
         $("#messages").append(li);
     });
 
@@ -54,9 +55,9 @@ $(document).ready(function () {
     });
 
     $('#sendbutton').on('click', function () {
-        console.log('txt: ');
         const msg = document.querySelector('#mymessage').value;
-        socket.emit('send msg', { 'msg': $('#mymessage').val(), 'user': localStorage.getItem('user_name') });
+        const time = (new Date()).getTime();
+        socket.emit('send msg', { 'msg': msg, 'user': user_name, 'time': time });
         $('#mymessage').val('');
         document.querySelector('#mymessage').focus();
     });
