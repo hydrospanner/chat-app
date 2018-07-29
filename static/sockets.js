@@ -37,6 +37,8 @@ $(document).ready(function () {
         current_room = get_current_room();
     });
 
+
+
     socket.on('receive message', function (data) {
         const li = document.createElement('li');
         li.className = "list-group-item";
@@ -57,7 +59,7 @@ $(document).ready(function () {
     $('#sendbutton').on('click', function () {
         const msg = document.querySelector('#mymessage').value;
         const time = (new Date()).getTime();
-        socket.emit('send msg', { 'msg': msg, 'user': user_name, 'time': time });
+        socket.emit('send msg', { 'msg': msg, 'user': user_name, 'time': time, 'room': current_room });
         $('#mymessage').val('');
         document.querySelector('#mymessage').focus();
     });
@@ -99,6 +101,9 @@ $(document).ready(function () {
     });
 
     function change_room(room) {
+        const old_room = current_room;
+        socket.emit('leave', { 'room': old_room });
+        socket.emit('join', {'room': room});
         current_room = room;
         $('#chat-room-name').text(room);
     };

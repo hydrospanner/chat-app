@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
-from flask_socketio import SocketIO, emit, send
+from flask_socketio import SocketIO, emit, send, join_room, leave_room, rooms
 
 from secrets import SECRET_KEY
 
@@ -22,7 +22,7 @@ def handle_unnamed_event(msg):
 
 @socketio.on('send msg')
 def handle_message(data):
-    emit('receive message', data, broadcast=True)
+    emit('receive message', data, room=data['room'])
 
 @socketio.on('announce')
 def handle_announcement(data):
@@ -43,6 +43,13 @@ def handle_rooms_request(data):
     data['rooms'] = chat_rooms
     emit('room list', data, broadcast=True)
 
+@socketio.on('join')
+def join(message):
+    join_room(message['room'])
+
+@socketio.on('leave')
+def leave(message):
+    leave_room(message['room'])
 
 if __name__ == '__main__':
     socketio.run(debug=True)
