@@ -120,6 +120,7 @@ $(document).ready(function () {
         socket.emit('join', { 'room': room });
         current_room = room;
         $('#chat-room-name').text(room);
+        localStorage.setItem('chat_room', room);
         const msg = user_name + ' has joined the room';
         socket.emit('announce', { 'msg': msg, 'room': current_room });
     }
